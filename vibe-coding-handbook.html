@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="비전공자를 위한 바이브 코딩 1시간 특강 — 세부 강의 지도안과 실습 핸드북. 무료 플랫폼 추천과 복사용 프롬프트 포함.">
+<meta name="color-scheme" content="light">
+<title>바이브 코딩 특강 · 강의 지도안 &amp; 실습 핸드북</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Crect%20width%3D%2724%27%20height%3D%2724%27%20rx%3D%276%27%20fill%3D%27%236a4cff%27%2F%3E%3Cpath%20d%3D%27M7%208l4%204-4%204%27%20stroke%3D%27%23fff%27%20stroke-width%3D%272.2%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%20fill%3D%27none%27%2F%3E%3Cpath%20d%3D%27M13%2016h4%27%20stroke%3D%27%23fff%27%20stroke-width%3D%272.2%27%20stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E">
+<style>
+:root{
+  --paper:#fbfaff; --surface:#ffffff;
+  --ink:#211d33; --ink-soft:#413a59; --muted:#736d87;
+  --line:#ebe8f5; --line-strong:#ddd8ee;
+  --accent:#6a4cff; --accent-ink:#4a32c2; --accent-soft:#efeaff; --accent-softer:#f6f3ff;
+  --warm:#e0860d; --warm-soft:#fdf2e0;
+  --teal:#0e9d92; --teal-soft:#e1f5f2;
+  --code-bg:#1c1930; --code-bg2:#272243; --code-ink:#e9e7f7; --code-muted:#a39ccb;
+  --maxw:760px; --sb:282px;
+  --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","맑은 고딕","Noto Sans KR",system-ui,sans-serif;
+  --mono:"D2Coding","SFMono-Regular",ui-monospace,"JetBrains Mono",Consolas,"Apple SD Gothic Neo",monospace;
+  --shadow:0 1px 2px rgba(33,29,51,.04),0 8px 24px rgba(33,29,51,.06);
+  --shadow-code:0 2px 6px rgba(20,17,40,.18),0 18px 44px rgba(20,17,40,.22);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);
+  font-size:16.5px;line-height:1.78;letter-spacing:-.003em;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+.progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:60;background:transparent}
+.progress__fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),#a07bff,#ff6ea0)}
+
+.layout{display:flex;align-items:flex-start}
+.sidebar{position:sticky;top:0;align-self:flex-start;width:var(--sb);height:100vh;overflow-y:auto;
+  flex:0 0 auto;background:linear-gradient(180deg,#fff,#fbfaff);border-right:1px solid var(--line);padding:24px 16px 48px}
+.main{flex:1 1 auto;min-width:0}
+.container{max-width:var(--maxw);margin:0 auto;padding:0 30px 120px}
+
+.brand{display:flex;align-items:center;gap:11px;padding:6px 8px 16px;margin-bottom:4px;border-bottom:1px solid var(--line)}
+.brand__mark{width:36px;height:36px;border-radius:10px;background:var(--accent);display:grid;place-items:center;
+  box-shadow:0 6px 14px rgba(106,76,255,.34);flex:0 0 auto}
+.brand__mark svg{width:19px;height:19px}
+.brand__title{font-weight:800;font-size:14.5px;letter-spacing:-.01em;display:block;line-height:1.2}
+.brand__sub{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+
+.toc{display:flex;flex-direction:column;gap:1px;margin-top:8px}
+.toc__group{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--accent-ink);padding:18px 10px 7px}
+a.toc__group{text-decoration:none;border-radius:8px;transition:background .15s,color .15s}
+a.toc__group:hover{background:var(--accent-softer)}
+.toc__link{display:block;text-decoration:none;color:var(--ink-soft);font-size:13.5px;line-height:1.42;font-weight:600;
+  padding:8px 11px;border-radius:9px;transition:background .15s,color .15s}
+.toc__link:hover{background:var(--accent-softer);color:var(--accent-ink)}
+.toc__link.is-active{background:var(--accent-soft);color:var(--accent-ink);font-weight:700}
+
+.topbar{display:none}
+.overlay{display:none}
+
+.hero{padding:62px 0 30px;border-bottom:1px solid var(--line);margin-bottom:6px}
+.hero__eyebrow{display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:.02em;color:var(--accent-ink);
+  background:var(--accent-soft);padding:6px 13px;border-radius:999px;margin-bottom:20px}
+.hero__title{font-size:clamp(34px,6vw,52px);line-height:1.04;font-weight:800;letter-spacing:-.035em;margin:0 0 10px}
+.hero__sub{font-size:clamp(16px,2.4vw,20px);color:var(--muted);font-weight:600;margin:0 0 26px}
+.hero__thesis{margin:0 0 26px;padding:20px 24px;border-left:3px solid var(--accent);
+  background:linear-gradient(180deg,var(--accent-softer),#fff);border-radius:0 14px 14px 0;
+  font-size:clamp(17px,2.6vw,21px);line-height:1.5;font-weight:650;color:var(--ink)}
+.hero__thesis em{font-style:normal;color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line-strong)}
+.hero__thesis strong{color:var(--accent-ink);font-weight:800}
+
+.content h2{font-size:clamp(23px,3.4vw,28px);line-height:1.25;font-weight:800;letter-spacing:-.022em;
+  margin:56px 0 18px;scroll-margin-top:22px}
+.content h2::before{content:"";display:block;width:42px;height:4px;border-radius:3px;
+  background:linear-gradient(90deg,var(--accent),#a988ff);margin-bottom:16px}
+.content h1{font-size:clamp(26px,4vw,33px);font-weight:800;letter-spacing:-.025em;margin:78px 0 6px;
+  padding-top:32px;border-top:2px solid var(--line-strong);scroll-margin-top:22px}
+.content h3{font-size:clamp(17px,2.4vw,19.5px);font-weight:750;letter-spacing:-.012em;margin:30px 0 10px;
+  color:var(--ink);scroll-margin-top:22px}
+.content p{margin:0 0 15px}
+.content ul,.content ol{margin:0 0 16px;padding-left:1.4em}
+.content li{margin:7px 0;padding-left:4px}
+.content li::marker{color:var(--accent)}
+.content ol li::marker{font-weight:800;color:var(--accent-ink)}
+.content ul ul,.content ol ol,.content ul ol,.content ol ul{margin:7px 0}
+.content strong{font-weight:750;color:var(--ink)}
+.content em{font-style:italic;color:var(--ink-soft)}
+.content a{color:var(--accent-ink);text-decoration:underline;text-decoration-color:var(--line-strong);text-underline-offset:2px;font-weight:600}
+.content a:hover{text-decoration-color:var(--accent)}
+.content hr{border:0;border-top:1px solid var(--line);margin:42px 0}
+.content :not(pre)>code{font-family:var(--mono);font-size:.85em;background:var(--accent-soft);
+  color:var(--accent-ink);padding:2px 6px;border-radius:6px;font-weight:600}
+
+.prompt-caption{font-style:normal!important;font-size:12.5px;font-weight:700;letter-spacing:.01em;
+  color:var(--accent-ink);margin:24px 0 0;display:flex;align-items:center;gap:8px}
+.prompt-caption::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);flex:0 0 auto}
+.prompt-caption em{font-style:normal;color:inherit}
+
+.prompt{margin:12px 0 22px;border-radius:14px;overflow:hidden;border:1px solid #322c54;
+  background:linear-gradient(180deg,var(--code-bg2),var(--code-bg));box-shadow:var(--shadow-code)}
+.prompt-caption + .prompt{margin-top:9px}
+.prompt__bar{display:flex;align-items:center;justify-content:space-between;
+  padding:9px 12px 9px 16px;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.07)}
+.prompt__label{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--code-muted);
+  display:flex;align-items:center;gap:9px}
+.prompt__label::before{content:"";width:8px;height:8px;border-radius:50%;background:#ff6ea0;box-shadow:0 0 0 3px rgba(255,110,160,.18)}
+.prompt__copy{font-family:var(--font);font-size:12.5px;font-weight:700;color:var(--code-ink);
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);padding:6px 14px;border-radius:8px;
+  cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.prompt__copy:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.prompt__copy.is-copied{background:#199d6a;border-color:#199d6a;color:#fff}
+.prompt pre{margin:0;padding:16px 18px;overflow-x:auto;font-family:var(--mono);font-size:13.5px;line-height:1.72;
+  color:var(--code-ink);white-space:pre-wrap;word-break:break-word;overflow-wrap:anywhere}
+.prompt pre code{font-family:inherit;color:inherit;background:none;padding:0;font-weight:inherit}
+
+.callout{display:flex;gap:13px;margin:18px 0 22px;padding:15px 18px;border-radius:13px;
+  background:var(--surface);border:1px solid var(--line);border-left-width:4px;box-shadow:var(--shadow)}
+.callout__icon{font-size:18px;line-height:1.55;flex:0 0 auto}
+.callout__body{min-width:0}
+.callout__body>:first-child{margin-top:0}
+.callout__body>:last-child{margin-bottom:0}
+.callout__body p{margin:0 0 9px}
+.callout__body ul,.callout__body ol{margin:6px 0}
+.callout--tip{border-left-color:var(--warm);background:linear-gradient(180deg,var(--warm-soft),#fff)}
+.callout--note{border-left-color:var(--accent);background:linear-gradient(180deg,var(--accent-softer),#fff)}
+.callout--deep{border-left-color:var(--teal);background:linear-gradient(180deg,var(--teal-soft),#fff)}
+.callout--say{border-left-color:#b6aed6;background:#faf9fd}
+
+.table-wrap{overflow-x:auto;margin:8px 0 22px;border:1px solid var(--line-strong);border-radius:12px;
+  box-shadow:var(--shadow);-webkit-overflow-scrolling:touch}
+.content table{border-collapse:collapse;width:100%;font-size:14px;min-width:520px}
+.content thead th{background:var(--accent-soft);color:var(--accent-ink);font-weight:750;text-align:left;
+  padding:11px 14px;border-bottom:1px solid var(--line-strong);font-size:13px;letter-spacing:.01em;vertical-align:bottom}
+.content tbody td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink-soft)}
+.content tbody tr:last-child td{border-bottom:0}
+.content tbody tr:nth-child(even){background:#fcfbff}
+.content tbody td strong,.content thead th strong{color:var(--ink)}
+
+.footer{margin-top:64px;padding-top:24px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;
+  display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between}
+
+@media (max-width:900px){
+  .layout{display:block}
+  .sidebar{position:fixed;top:0;left:0;bottom:0;height:100dvh;width:280px;transform:translateX(-100%);
+    transition:transform .25s ease;z-index:50;box-shadow:0 0 44px rgba(20,17,40,.2)}
+  .sidebar.is-open{transform:none}
+  .topbar{display:flex;position:sticky;top:0;z-index:40;align-items:center;gap:12px;padding:11px 16px;
+    background:rgba(251,250,255,.92);backdrop-filter:saturate(180%) blur(10px);
+    -webkit-backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid var(--line)}
+  .menu-btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--font);font-weight:700;font-size:14px;
+    color:var(--ink);background:var(--surface);border:1px solid var(--line-strong);border-radius:10px;padding:8px 13px;cursor:pointer}
+  .topbar__title{font-weight:800;font-size:14.5px;letter-spacing:-.01em}
+  .overlay{display:block;position:fixed;inset:0;background:rgba(20,17,40,.42);opacity:0;visibility:hidden;
+    transition:opacity .25s,visibility .25s;z-index:45}
+  .overlay.is-show{opacity:1;visibility:visible}
+  .container{padding:0 18px 90px}
+  .hero{padding:30px 0 22px}
+  .content h2,.content h1,.content h3{scroll-margin-top:74px}
+  body{font-size:16px}
+}
+
+@media print{
+  .sidebar,.topbar,.overlay,.progress,.prompt__copy{display:none!important}
+  .layout{display:block}.main{display:block}
+  .container{max-width:none;padding:0}
+  body{font-size:11pt;background:#fff}
+  .hero{padding:0 0 16px}
+  .prompt{box-shadow:none;border:1px solid #b9b3d6;background:#f5f3fb!important}
+  .prompt pre{color:#1a1730}
+  .prompt__bar{background:#e9e6f5}
+  .prompt__label{color:#5b537e}
+  .callout,.table-wrap{box-shadow:none;break-inside:avoid}
+  .content h1,.content h2,.content h3{break-after:avoid}
+  a{color:#000}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important;animation:none!important}
+}
+:focus-visible{outline:2.5px solid var(--accent);outline-offset:2px;border-radius:4px}
+</style>
+</head>
+<body>
+<div class="progress"><div class="progress__fill"></div></div>
+
+<div class="topbar">
+  <button class="menu-btn" type="button" aria-label="목차 열기" aria-expanded="false">☰ 목차</button>
+  <span class="topbar__title">바이브 코딩 특강</span>
+</div>
+<div class="overlay"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="brand__mark"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 8l4 4-4 4" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 16h4" stroke="white" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+      <span>
+        <span class="brand__title">바이브 코딩 특강</span>
+        <span class="brand__sub">강의 지도안</span>
+      </span>
+    </div>
+    <nav class="toc">
+<div class="toc__group">강의 지도안</div>
+<a class="toc__link" href="#sec-1">⏱️ 전체 타임테이블</a>
+<a class="toc__link" href="#sec-2">🎬 도입</a>
+<a class="toc__link" href="#sec-3">🌐 파트 1 — 웹앱은 어떻게 동작하는가</a>
+<a class="toc__link" href="#sec-4">💾 파트 2 — 단순 HTML vs 저장·상호작용의 차이</a>
+<a class="toc__link" href="#sec-5">⚠️ 파트 3 — 바이브 코딩 시 고려해야 할 점</a>
+<a class="toc__link" href="#sec-6">📋 파트 4 — 과업지시서 작성 전 체크리스트</a>
+<a class="toc__link" href="#sec-7">🛠️ 파트 5 — 첫 웹앱 만들기</a>
+<a class="toc__link" href="#sec-8">🆓 파트 6 — 무료 플랫폼 추천 + 실습 안내</a>
+<a class="toc__group toc__group--link" href="#sec-9">📎 부록</a>
+<a class="toc__link" href="#sec-10">부록 A — 실습용 과업지시서 빈 템플릿</a>
+<a class="toc__link" href="#sec-11">부록 B — 추천 첫 과제</a>
+<a class="toc__link" href="#sec-12">부록 C — 첫 프롬프트 예시 모음</a>
+<a class="toc__link" href="#sec-13">부록 D — 자주 막히는 지점 &amp; 대처</a>
+<a class="toc__link" href="#sec-14">부록 E — 강사용 사전 준비 팁</a>
+</nav>
+  </aside>
+  <main class="main">
+    <div class="container">
+      <header class="hero">
+  <span class="hero__eyebrow">비전공자를 위한 · 60분 특강 핸드북</span>
+  <h1 class="hero__title">바이브 코딩 특강</h1>
+  <p class="hero__sub">세부 강의 지도안 &amp; 실습 핸드북</p>
+  <blockquote class="hero__thesis">“이제 코드를 <em>타이핑</em>하는 능력이 아니라,<br><strong>원하는 걸 정확히 설명하는 능력</strong>이 중요하다.”</blockquote>
+</header>
+      <div class="content">
+        <h2 id="sec-1">⏱️ 전체 타임테이블 (60분)</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>시간</th>
+<th>파트</th>
+<th>내용</th>
+<th>분</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0:00–0:05</td>
+<td>도입</td>
+<td>바이브 코딩이 뭔지, 오늘 끝나면 뭘 할 수 있는지</td>
+<td>5</td>
+</tr>
+<tr>
+<td>0:05–0:15</td>
+<td>파트 1</td>
+<td>웹앱은 어떻게 동작하는가</td>
+<td>10</td>
+</tr>
+<tr>
+<td>0:15–0:23</td>
+<td>파트 2</td>
+<td>단순 HTML vs 저장·상호작용의 차이</td>
+<td>8</td>
+</tr>
+<tr>
+<td>0:23–0:31</td>
+<td>파트 3</td>
+<td>바이브 코딩 시 고려해야 할 점</td>
+<td>8</td>
+</tr>
+<tr>
+<td>0:31–0:41</td>
+<td>파트 4</td>
+<td>과업지시서 작성 전 체크리스트</td>
+<td>10</td>
+</tr>
+<tr>
+<td>0:41–0:53</td>
+<td>파트 5</td>
+<td>첫 웹앱 만들기 (Step by Step 시연)</td>
+<td>12</td>
+</tr>
+<tr>
+<td>0:53–1:00</td>
+<td>파트 6</td>
+<td>무료 플랫폼 추천 + 실습 안내</td>
+<td>7</td>
+</tr>
+</tbody>
+</table></div>
+<div class="callout callout--tip"><span class="callout__icon">💡</span><div class="callout__body">
+<p>시간이 부족하면 파트 1을 7분으로 줄이고, 파트 5(시연)는 가능한 한 사수하세요. 직접 만드는 걸 눈으로 본 사람만 실습을 시작할 수 있습니다.</p>
+</div></div>
+<hr/>
+<h2 id="sec-2">🎬 도입 (5분)</h2>
+<p><strong>할 말의 흐름</strong><br/>
+- "바이브 코딩(vibe coding)은 코드를 직접 쓰는 대신, <strong>사람 말로 원하는 걸 설명하면 AI가 코드를 대신 써주는</strong> 방식입니다. 2025년 초에 등장한 용어인데, 1년 만에 비전공자도 앱을 만드는 시대가 됐습니다."<br/>
+- "여러분은 요리 레시피를 짜는 사람이고, AI는 그 레시피대로 요리하는 주방장이라고 생각하세요. 칼질을 잘하는 게 아니라 <strong>레시피를 명확하게 쓰는 게</strong> 오늘의 핵심입니다."<br/>
+- <strong>오늘의 약속:</strong> "강의가 끝나면, 여러분 각자가 '한 줄 방명록' 같은 작동하는 웹앱을 직접 만들어볼 겁니다. 코드 한 줄 몰라도 됩니다."</p>
+<p><strong>팁:</strong> 가능하면 완성된 예시 앱(방명록)을 미리 띄워두고 "이게 오늘 여러분이 만들 결과물입니다"라고 보여주면 몰입도가 확 올라갑니다.</p>
+<hr/>
+<h2 id="sec-3">🌐 파트 1 — 웹앱은 어떻게 동작하는가 (10분)</h2>
+<p>비전공자에게는 <strong>비유로</strong> 설명하는 게 가장 효과적입니다.</p>
+<h3>① 웹앱의 동작 = 식당</h3>
+<ul>
+<li><strong>손님(사용자/브라우저)</strong> 이 주문(요청)을 한다 → <strong>주방(서버)</strong> 이 요리(처리)를 한다 → 음식(응답)을 내준다.</li>
+<li>우리가 주소창에 사이트를 입력하면, 내 컴퓨터가 멀리 있는 서버에 "이 페이지 주세요"라고 요청하고, 서버가 화면을 보내주는 것.</li>
+<li><strong>홀(프론트엔드)</strong>: 손님 눈에 보이는 부분 — 메뉴판, 테이블, 인테리어.</li>
+<li><strong>주방(백엔드)</strong>: 손님 눈에 안 보이지만 실제로 일이 돌아가는 곳 — 데이터 처리, 저장.</li>
+</ul>
+<h3>② 화면을 이루는 3가지 = 집 짓기</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>요소</th>
+<th>역할</th>
+<th>비유</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HTML</strong></td>
+<td>구조 / 뼈대</td>
+<td>벽, 방, 문 (어디에 뭐가 있나)</td>
+</tr>
+<tr>
+<td><strong>CSS</strong></td>
+<td>꾸밈 / 디자인</td>
+<td>벽지, 색깔, 가구 배치 (예뻐 보이게)</td>
+</tr>
+<tr>
+<td><strong>JavaScript</strong></td>
+<td>동작 / 기능</td>
+<td>전기·스위치 (버튼 누르면 불이 켜진다)</td>
+</tr>
+</tbody>
+</table></div>
+<div class="callout callout--say"><span class="callout__icon">💬</span><div class="callout__body">
+<p><strong>강조 멘트:</strong> "여러분은 이걸 직접 안 짭니다. AI에게 '이런 집을 지어줘'라고 설명만 하면 됩니다. 다만 <strong>HTML/CSS/JS가 각각 뭘 하는지</strong> 알면, AI에게 '글씨 색만 바꿔줘(CSS)', '버튼 동작을 바꿔줘(JS)'처럼 정확히 요청할 수 있습니다."</p>
+</div></div>
+<h3>③ 데이터는 어디에 사는가? (파트 2로 가는 다리)</h3>
+<ul>
+<li>주방에는 <strong>냉장고/창고(데이터베이스)</strong> 가 있다 → 손님이 다 가도 재료는 남아있다.</li>
+<li>"그럼 <strong>남는 정보</strong>와 <strong>사라지는 정보</strong>가 있다는 건데... 그게 다음 파트의 핵심입니다."</li>
+</ul>
+<hr/>
+<h2 id="sec-4">💾 파트 2 — 단순 HTML vs 저장·상호작용의 차이 (8분)</h2>
+<p>이 파트가 오늘 강의에서 <strong>개념적으로 가장 중요</strong>합니다. 앱의 난이도를 결정하는 핵심이기 때문입니다. <strong>3단계 모델</strong>로 설명하세요.</p>
+<h3>1단계 — 정적 페이지 (단순 HTML) = 📄 종이 포스터</h3>
+<ul>
+<li>보기만 한다. 글씨와 그림이 박혀 있다.</li>
+<li>새로고침해도 똑같다. <strong>내가 뭘 입력할 수 없다.</strong></li>
+<li>예: 가게 안내문, 회사 소개 페이지.</li>
+</ul>
+<h3>2단계 — 상호작용 (저장 X) = 🖍️ 화이트보드</h3>
+<ul>
+<li>내가 글씨를 쓰면 화면에 나타난다. 버튼을 누르면 반응한다.</li>
+<li><strong>그런데 새로고침(또는 창을 닫으면) 다 사라진다.</strong> 화이트보드를 지운 것과 같다.</li>
+<li>예: 계산기, 입력하면 즉시 결과가 바뀌는 화면.</li>
+</ul>
+<h3>3단계 — 저장 (Storage) = 📒 노트·장부</h3>
+<ul>
+<li>입력한 내용이 <strong>닫았다 다시 열어도 남아있다.</strong></li>
+<li>여기서 또 두 갈래로 나뉩니다:</li>
+<li><strong>내 기기에만 저장 (브라우저 저장 / localStorage)</strong> = 내 책상 위 개인 노트. 다른 사람·다른 기기에서는 안 보임.</li>
+<li><strong>진짜 저장 (데이터베이스)</strong> = 모두가 함께 보는 공용 장부. 다른 사람도, 폰에서도 같은 내용을 본다.</li>
+</ul>
+<div class="callout callout--say"><span class="callout__icon">💬</span><div class="callout__body">
+<p><strong>핵심 멘트 (꼭 하세요):</strong><br/>
+"<strong>'저장'과 '여러 사람이 함께'가 필요한 순간, 난이도가 한 단계 올라갑니다.</strong> 그래서 앱을 만들기 전에 반드시 이 질문에 답해야 합니다 —<br/>
+<em>'이 정보가 새로고침해도 남아야 하나요?'</em><br/>
+<em>'다른 사람·다른 기기에서도 보여야 하나요?'</em><br/>
+이 답에 따라 AI에게 시킬 내용이 완전히 달라집니다."</p>
+</div></div>
+<div class="callout callout--note"><span class="callout__icon">📌</span><div class="callout__body">이 질문은 파트 4(과업지시서 체크리스트)의 핵심 항목으로 다시 등장합니다.</div></div>
+<hr/>
+<h2 id="sec-5">⚠️ 파트 3 — 바이브 코딩 시 고려해야 할 점 (8분)</h2>
+<p>"AI에게 잘 시키는 법"의 원칙들입니다. <strong>'성실한 신입 직원'</strong> 비유로 묶으면 외우기 쉽습니다.</p>
+<ol>
+<li>
+<p><strong>AI는 시키는 대로 하는 성실한 신입이다.</strong><br/>
+   똑똑하지만 눈치는 없습니다. 모호하게 말하면 자기 마음대로 해석합니다. → <strong>구체적으로.</strong> ("예쁘게" ❌ → "버튼은 파란색, 모서리는 둥글게" ⭕)</p>
+</li>
+<li>
+<p><strong>한 번에 다 만들지 말고, 작게 쪼개서 한 기능씩.</strong><br/>
+   처음부터 10가지 기능을 한 프롬프트에 다 넣으면 엉킵니다. → 화면 먼저 → 입력 기능 → 저장 기능 순서로 단계별 추가.</p>
+</li>
+<li>
+<p><strong>결과를 믿지 말고 직접 눌러보며 확인한다.</strong><br/>
+   "되겠지" 하지 말고 클릭해 봅니다. 안 되면 <strong>"이렇게 눌렀더니 이런 에러가 떴어"</strong> 라고 화면/메시지를 그대로 전달하세요. AI는 그걸 보고 고칩니다.</p>
+</li>
+<li>
+<p><strong>막히면 같은 말을 반복하지 말 것.</strong><br/>
+   똑같은 요청을 3번 해도 똑같이 막힙니다. → 표현을 바꾸거나, 화면을 캡처해 붙이거나, "다른 방법으로 해줘"라고 접근을 바꾸세요.</p>
+</li>
+<li>
+<p><strong>민감 정보는 절대 넣지 않는다.</strong><br/>
+   비밀번호, 카드번호, 실명+전화번호 같은 개인정보를 프롬프트나 앱에 넣지 마세요. 특히 만든 앱을 <strong>인터넷에 공개로 배포할 때</strong> 주의. (무료 플랫폼은 입력 내용을 학습에 쓸 수 있습니다.)</p>
+</li>
+<li>
+<p><strong>다 이해 못 해도 괜찮지만, 큰 흐름은 파악한다.</strong><br/>
+   "왜 이렇게 했어?"라고 AI에게 물어보며 조금씩 익히세요. 완벽히 이해할 필요는 없지만, 내 앱이 데이터를 <strong>어디에 저장하는지</strong> 정도는 알고 있어야 합니다.</p>
+</li>
+<li>
+<p><strong>기대치 관리.</strong><br/>
+   간단한 도구·프로토타입에는 정말 강력합니다. 하지만 기능이 많아지고 복잡해지면 한계가 옵니다. → <strong>"작고 쓸모 있는 것부터"</strong> 시작하세요.</p>
+</li>
+</ol>
+<hr/>
+<h2 id="sec-6">📋 파트 4 — 과업지시서 작성 전 체크리스트 (10분)</h2>
+<p>"AI에게 시키기 전에, 내가 뭘 원하는지부터 정리한다." <strong>육하원칙처럼 6가지 + 참고자료</strong>로 정리하면 비전공자도 빠짐없이 쓸 수 있습니다. (빈 템플릿은 부록 A 참고)</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>질문</th>
+<th>정해야 할 것</th>
+<th>예시</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>①</td>
+<td><strong>무엇을 / 왜?</strong> (목적)</td>
+<td>한 문장으로 정의</td>
+<td>"우리 모임 회비를 자동으로 나눠 계산하는 앱"</td>
+</tr>
+<tr>
+<td>②</td>
+<td><strong>누가 쓰나?</strong> (사용자·환경)</td>
+<td>나만? 여럿? PC? 폰?</td>
+<td>"모임 회원 10명이 각자 폰으로"</td>
+</tr>
+<tr>
+<td>③</td>
+<td><strong>무슨 기능?</strong> (기능 목록 + 우선순위)</td>
+<td>꼭 필요한 것(MVP) vs 있으면 좋은 것</td>
+<td>(필수) 금액 입력·자동 분배 / (나중에) 정산 내역 저장</td>
+</tr>
+<tr>
+<td>④</td>
+<td><strong>어떻게 생겼나?</strong> (화면 구성)</td>
+<td>화면 몇 개, 뭐가 보이나</td>
+<td>"한 화면. 위에 입력칸, 아래에 결과"</td>
+</tr>
+<tr>
+<td>⑤</td>
+<td><strong>어떤 정보를 다루나?</strong> (데이터·저장)</td>
+<td>입력/표시할 정보, <strong>저장 필요 여부</strong></td>
+<td>"이름·금액. 다음에 열어도 남아야 함 → 저장 필요"</td>
+</tr>
+<tr>
+<td>⑥</td>
+<td><strong>제약·기타</strong></td>
+<td>무료, 한글, 로그인 여부 등</td>
+<td>"무료, 한글, 로그인 없이"</td>
+</tr>
+<tr>
+<td>⭐</td>
+<td><strong>참고할 예시</strong></td>
+<td>"이 사이트/앱처럼" 1~2개</td>
+<td>"더치페이 앱 ○○처럼 깔끔하게"</td>
+</tr>
+</tbody>
+</table></div>
+<div class="callout callout--say"><span class="callout__icon">💬</span><div class="callout__body">
+<p><strong>강조 멘트:</strong> "특히 ⑤번 — <strong>저장이 필요한가?</strong> — 이게 파트 2에서 본 그 질문입니다. 이거 하나만 명확히 정해도 결과물이 완전히 달라집니다."</p>
+<p><strong>실습 연결:</strong> "지금 종이/메모장을 꺼내서, 여러분이 만들 앱을 이 6칸에 채워보세요. 이게 곧 여러분의 첫 프롬프트가 됩니다." (이 자리에서 2~3분 직접 쓰게 하면 실습 전환이 매끄럽습니다.)</p>
+</div></div>
+<hr/>
+<h2 id="sec-7">🛠️ 파트 5 — 첫 웹앱 만들기 (Step by Step 시연, 12분)</h2>
+<p><strong>예제: "한 줄 방명록"</strong> — 저장의 차이를 가장 잘 보여주는 예제입니다.<br/>
+(대안: 모임 회비 정산기 / 간단 투표 — 부록 B)</p>
+<p>화면에 띄워놓고 <strong>실시간으로 같이 만드는 모습</strong>을 보여주세요.</p>
+<h3>Step 1. 아이디어 → 과업지시서 (1분)</h3>
+<div class="callout callout--say"><span class="callout__icon">💬</span><div class="callout__body">
+<p>"방명록을 만든다. 방문자가 한 줄 메시지를 남기면 화면에 목록으로 쌓인다. 새로고침해도 남아야 한다. 무료·한글·로그인 없음."</p>
+</div></div>
+<h3>Step 2. 플랫폼 열기 (1분)</h3>
+<ul>
+<li>Google AI Studio(aistudio.google.com) 또는 claude.ai 접속. 새 프로젝트 시작.</li>
+</ul>
+<h3>Step 3. 첫 프롬프트 입력 (3분)</h3>
+<p>한 번에 길게 쓰지 말고, <strong>핵심부터</strong> 입력합니다.</p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">프롬프트</span><button class="prompt__copy" type="button">복사</button></div><pre><code>간단한 방명록 웹앱을 만들어줘.
+- 방문자가 이름과 한 줄 메시지를 입력하고 '남기기' 버튼을 누르면
+  아래 목록에 추가돼.
+- 한글, 깔끔한 디자인, 로그인 없이.
+- 모바일에서도 잘 보이게.
+</code></pre></div>
+<p>→ 미리보기에서 입력·버튼이 작동하는 화면이 나옵니다. (= 파트 2의 <strong>2단계, 상호작용</strong>)</p>
+<h3>Step 4. 직접 눌러서 테스트 (1분)</h3>
+<ul>
+<li>이름·메시지 넣고 버튼 클릭 → 목록에 추가되는지 확인.</li>
+<li><strong>여기서 새로고침</strong> → 사라짐을 보여주며: "보세요, 아직 화이트보드 단계입니다."</li>
+</ul>
+<h3>Step 5. 저장 기능 추가 (3분) ← 오늘의 하이라이트</h3>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">프롬프트</span><button class="prompt__copy" type="button">복사</button></div><pre><code>지금은 새로고침하면 글이 사라져.
+새로고침해도 남아있도록 저장 기능을 추가해줘.
+</code></pre></div>
+<p>→ 다시 새로고침해도 글이 남는 걸 보여줍니다. (= 파트 2의 <strong>3단계, 저장</strong>)<br/>
+- (심화) "다른 사람도 같은 글을 보게 하려면?" → 데이터베이스 연동이 필요하다고 짚어주기. (시간 되면 Google AI Studio의 Firebase 연동 언급)</p>
+<h3>Step 6. 다듬기 &amp; 마무리 (2분)</h3>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">프롬프트</span><button class="prompt__copy" type="button">복사</button></div><pre><code>글이 최신순으로 위에 오게 해줘.
+그리고 글마다 작성 시간을 같이 보여줘.
+</code></pre></div>
+<ul>
+<li>(원하면) 배포/공유 버튼으로 인터넷 주소 만들기까지 시연.</li>
+</ul>
+<h3>Step 7. 정리</h3>
+<div class="callout callout--say"><span class="callout__icon">💬</span><div class="callout__body">
+<p>"보셨죠? <strong>① 한 문장으로 시작 → ② 작동하는 화면 → ③ 한 기능씩 추가 → ④ 눌러서 확인.</strong> 이게 바이브 코딩의 전부입니다."</p>
+</div></div>
+<hr/>
+<h2 id="sec-8">🆓 파트 6 — 무료 플랫폼 추천 + 실습 안내 (7분)</h2>
+<h3>6-1. 빌드(앱 만들기)용 — 크레딧 걱정 적은 순</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>플랫폼</th>
+<th>특징</th>
+<th>추천 상황</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Google AI Studio</strong><br/>(aistudio.google.com)</td>
+<td>UI 영구 무료, 신용카드·크레딧 없음. 구글 계정만 있으면 됨. 무료는 Flash 모델 기준(초보 실습엔 충분).</td>
+<td>⭐ <strong>단체 동시 실습에 최적.</strong> 중간에 막힐 걱정이 가장 적음</td>
+</tr>
+<tr>
+<td><strong>Claude</strong><br/>(claude.ai)</td>
+<td>무료, 미리보기 즉시. '정적→상호작용→저장' 차이를 한 곳에서 보여주기 좋음</td>
+<td>⭐ 개념 시연 + 가벼운 첫 앱 만들기</td>
+</tr>
+<tr>
+<td><strong>Bolt.new</strong></td>
+<td>아이디어→화면까지 가장 빠름. 단, 무료 토큰이 빨리 소진됨</td>
+<td>빠르게 결과 뽑아보기 (소진 주의 안내)</td>
+</tr>
+<tr>
+<td><strong>Base44</strong></td>
+<td>한 문장으로 DB 있는 앱까지 생성. 무료 플랜이 후한 편</td>
+<td>좀 더 본격적인 앱</td>
+</tr>
+<tr>
+<td><strong>Lovable</strong></td>
+<td>입문자에게 가장 친절한 대화형 빌더</td>
+<td><strong>무료 크레딧이 하루 약 5회로 적어</strong> 단체 실습엔 빠듯</td>
+</tr>
+<tr>
+<td><strong>Replit</strong></td>
+<td>브라우저 안 풀 개발환경</td>
+<td>빌드는 무료지만 무료 퍼블리싱은 1개·30일 제한(아래 참고)</td>
+</tr>
+</tbody>
+</table></div>
+<h3>6-2. 퍼블리싱(인터넷에 공개)용 — "정적 vs 백엔드"로 갈린다</h3>
+<div class="callout callout--tip"><span class="callout__icon">💡</span><div class="callout__body">
+<p><strong>핵심:</strong> 앱을 <em>만드는</em> 건 거의 다 무료다. 인터넷에 <em>올릴 때</em> 비용이 갈리는데, 그 기준이 바로 파트 2에서 본 구분이다 —<br>
+<strong>① 혼자 도는 정적 앱</strong> (브라우저 저장 localStorage 포함) → 영구 무료로 공개 가능<br>
+<strong>② 서버에서 데이터를 공유하는 백엔드 앱</strong> (모두가 같은 글을 보는 방명록 등) → 한도가 생김</br></br></p>
+</div></div>
+<p><strong>① 정적 앱이면 (대부분의 입문 앱):</strong> 전용 정적 호스팅이 가장 견고. 진짜 영구 무료·카드 불필요.<br/>
+- <strong>Netlify</strong> — 폴더를 드래그&amp;드롭(Netlify Drop)하면 끝. 입문자에게 가장 쉬움.<br/>
+- <strong>Cloudflare Pages / Vercel(Hobby) / GitHub Pages</strong> — 모두 무료. (GitHub Pages는 계정·레포 필요)<br/>
+- 워크플로: <em>아무 데서나 만들기 → 코드 받기 → Netlify에 드래그 → 공개 URL.</em> 플랫폼 크레딧과 무관해 단체 실습에 사고가 가장 적음.</p>
+<p><strong>② 백엔드·공용 DB가 필요하면:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>플랫폼</th>
+<th>무료 퍼블리싱</th>
+<th>함정</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Google AI Studio → Cloud Run</strong></td>
+<td><strong>첫 2개 앱 무료, 카드 X</strong> (2026 I/O부터)</td>
+<td>3개째부터·실행 중 API 초과·확장 시 결제</td>
+</tr>
+<tr>
+<td><strong>Base44 / Lovable</strong></td>
+<td>자체 도메인으로 공개(브랜딩 표시)</td>
+<td>빌드 크레딧 한도 (Lovable 하루 5회)</td>
+</tr>
+<tr>
+<td><strong>Bolt.new → Netlify</strong></td>
+<td>코드 내보내 Netlify에 무료 배포</td>
+<td>빌드 토큰 빨리 소진</td>
+</tr>
+<tr>
+<td><strong>Replit</strong></td>
+<td>무료는 1개 앱·30일 후 만료(재배포 가능)·정적만</td>
+<td>백엔드 배포는 유료(autoscale $1~, VM $20~)</td>
+</tr>
+</tbody>
+</table></div>
+<div class="callout callout--note"><span class="callout__icon">📌</span><div class="callout__body">
+<p><strong>Google AI Studio 결제 오해 정정:</strong> 빌드는 물론 <strong>첫 앱 공개도 카드 없이 무료</strong>입니다(2026년 5월부터 첫 2개 무료). 수강생이 각자 1개씩 공개하는 실습엔 무료로 충분.</p>
+<p><strong>수업용 결론:</strong><br/>
+- 만들기는 <strong>Google AI Studio</strong> 또는 <strong>Claude</strong>로 시작 (무료·안 끊김).<br/>
+- "즉시 자체 URL로 공개"의 매끄러움을 원하면 → <strong>Base44</strong> 또는 <strong>Google AI Studio</strong>(첫 앱 무료·카드 X).<br/>
+- 대부분 입문 앱은 정적이므로, 가장 사고 없는 공개는 → <strong>Netlify / Cloudflare Pages에 무료 배포</strong>.</p>
+</div></div>
+<h3>실습 안내 (마무리)</h3>
+<ol>
+<li>파트 4에서 채운 <strong>과업지시서 6칸</strong>을 그대로 첫 프롬프트로 만들기.</li>
+<li>파트 5의 <strong>7단계 흐름</strong>대로 진행 (한 기능씩!).</li>
+<li>막히면 → 화면 캡처해서 AI에게 그대로 보여주기.</li>
+<li>추천 첫 과제는 부록 B, <strong>복사용 프롬프트는 부록 C</strong> 참고.</li>
+<li>(원하면) 인터넷 공개까지 → 정적 앱은 <strong>Netlify 드래그&amp;드롭</strong>, 백엔드 앱은 <strong>AI Studio 첫 앱 무료 배포</strong>.</li>
+</ol>
+<hr/>
+<h1 id="sec-9">📎 부록</h1>
+<h2 id="sec-10">부록 A — 실습용 과업지시서 빈 템플릿 (복사해서 채우기)</h2>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">템플릿</span><button class="prompt__copy" type="button">복사</button></div><pre><code>[내 웹앱 과업지시서]
+
+① 목적(한 문장):
+   이 앱은 ________________________ 를 위한 앱이다.
+
+② 사용자/환경:
+   누가 쓰나? ____________  /  PC? 폰? ____________
+
+③ 기능 목록 (우선순위):
+   - 꼭 필요(필수): ____________________________
+   - 있으면 좋음(나중에): ______________________
+
+④ 화면 구성:
+   화면 개수: ____  /  보이는 것: __________________
+
+⑤ 다루는 정보 &amp; 저장:
+   입력/표시할 정보: __________________________
+   새로고침해도 남아야 하나?  예 / 아니오
+   다른 사람·다른 기기에서도 보여야 하나?  예 / 아니오
+
+⑥ 제약/기타:
+   ☐ 무료   ☐ 한글   ☐ 로그인 없음   ☐ 모바일 지원
+   기타: ______________________________________
+
+⭐ 참고할 예시: "________ 처럼"
+</code></pre></div>
+<h2 id="sec-11">부록 B — 추천 첫 과제 (난이도별)</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>난이도</th>
+<th>과제</th>
+<th>배우는 개념</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>⭐ 쉬움</td>
+<td><strong>한 줄 방명록</strong> — 메시지를 남기면 목록에 쌓이고 저장됨</td>
+<td>입력·목록·저장</td>
+</tr>
+<tr>
+<td>⭐⭐ 보통</td>
+<td><strong>모임 회비 정산기</strong> — 인원·금액 입력하면 1/N 자동 계산</td>
+<td>입력·계산·결과 표시</td>
+</tr>
+<tr>
+<td>⭐⭐⭐ 도전</td>
+<td><strong>간단 투표</strong> — 보기를 만들고 클릭하면 득표수가 올라가며 저장됨</td>
+<td>상호작용·집계·저장</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="sec-12">부록 C — 첫 프롬프트 예시 모음</h2>
+<div class="callout callout--tip"><span class="callout__icon">💡</span><div class="callout__body">
+<p>권장: 한 번에 다 넣지 말고 <strong>①기본 → ②저장 → ③다듬기</strong> 순서로 단계별 입력 (파트 3 원칙 2). 빨리 보고 싶으면 각 항목의 "한 번에" 버전 사용.</p>
+</div></div>
+<p><strong>① 한 줄 방명록 — 오늘의 대표 실습 과제</strong></p>
+<p class="prompt-caption"><em>1단계 · 기본 화면과 입력 만들기</em></p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">프롬프트</span><button class="prompt__copy" type="button">복사</button></div><pre><code>간단한 '한 줄 방명록' 웹앱을 만들어줘.
+- 방문자가 '이름'과 '한 줄 메시지'를 입력하고 '남기기' 버튼을 누르면
+  그 메시지가 아래 목록에 추가돼.
+- 한글, 깔끔한 디자인, 로그인 없이, 모바일에서도 잘 보이게.
+</code></pre></div>
+<p class="prompt-caption"><em>2단계 · 저장 기능 추가 (← 오늘의 핵심)</em></p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">프롬프트</span><button class="prompt__copy" type="button">복사</button></div><pre><code>지금은 새로고침하면 글이 사라져.
+새로고침하거나 창을 닫았다 다시 열어도 글이 그대로 남아있도록
+저장 기능을 추가해줘.
+</code></pre></div>
+<p class="prompt-caption"><em>3단계 · 다듬기</em></p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">프롬프트</span><button class="prompt__copy" type="button">복사</button></div><pre><code>최신 글이 맨 위에 오게 하고, 글마다 작성한 날짜·시간을 함께 보여줘.
+글이 하나도 없을 때는 '첫 번째 방문자가 되어보세요!'라고 안내해줘.
+</code></pre></div>
+<p class="prompt-caption"><em>(빠르게: 한 번에 만들고 싶을 때)</em></p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">프롬프트</span><button class="prompt__copy" type="button">복사</button></div><pre><code>'한 줄 방명록' 웹앱을 만들어줘.
+- 이름과 한 줄 메시지를 입력해 '남기기'를 누르면 아래 목록에 추가돼.
+- 최신 글이 위로 오고, 글마다 작성 시간 표시.
+- 새로고침해도 글이 유지되도록 저장 기능 포함.
+- 한글, 깔끔하게, 로그인 없이, 모바일 대응.
+</code></pre></div>
+<div class="callout callout--deep"><span class="callout__icon">🔎</span><div class="callout__body">
+<p><strong>응용 팁(강사용):</strong> "모두가 같은 방명록을 보게 하고 싶어요"가 나오면 → 그건 <strong>백엔드·공용 DB</strong>가 필요한 경우(파트 6-2 ②). 정적 버전(내 기기에만 저장)으로 먼저 완성한 뒤, 원하는 분만 "다른 사람도 같은 글을 보도록 데이터베이스에 저장해줘"로 확장하게 안내하세요.</p>
+</div></div>
+<p><strong>② 회비 정산기</strong></p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">프롬프트</span><button class="prompt__copy" type="button">복사</button></div><pre><code>모임 회비 정산기 웹앱을 만들어줘.
+- 총 금액과 인원수를 입력하면 1인당 금액을 자동으로 계산해서 보여줘.
+- 한글, 깔끔하고 모바일에서도 잘 보이게, 로그인 없이.
+</code></pre></div>
+<p><strong>③ 간단 투표</strong></p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">프롬프트</span><button class="prompt__copy" type="button">복사</button></div><pre><code>간단한 투표 웹앱을 만들어줘.
+- 질문 하나와 보기 3개를 보여주고, 보기를 클릭하면 그 보기의 표가 1 올라가.
+- 각 보기의 현재 득표수가 막대로 보이게.
+- 새로고침해도 표가 유지되게 저장 기능 추가해줘.
+</code></pre></div>
+<h2 id="sec-13">부록 D — 자주 막히는 지점 &amp; 대처</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>증상</th>
+<th>대처</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>결과가 내가 원한 거랑 다름</td>
+<td>더 구체적으로 다시 설명 (색·위치·동작을 콕 집어서)</td>
+</tr>
+<tr>
+<td>버튼을 눌러도 반응 없음</td>
+<td>"○○ 버튼을 눌러도 아무 일도 안 일어나. 고쳐줘"라고 증상 그대로 전달</td>
+</tr>
+<tr>
+<td>새로고침하면 내용이 사라짐</td>
+<td>"새로고침해도 남도록 저장 기능을 추가해줘"</td>
+</tr>
+<tr>
+<td>같은 요청을 반복해도 안 됨</td>
+<td>표현을 바꾸거나, 화면을 캡처해 붙이거나, "다른 방법으로 해줘"</td>
+</tr>
+<tr>
+<td>무료 크레딧/토큰 소진</td>
+<td>다른 무료 플랫폼으로 이동 (위 표 참고)</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="sec-14">부록 E — 강사용 사전 준비 팁</h2>
+<ul>
+<li>수강생에게 <strong>구글 계정 로그인 상태</strong>로 오게 미리 공지하면 실습 시작이 빨라집니다.</li>
+<li>시연용 완성 예시 앱을 미리 하나 만들어 띄워두세요 (도입에서 "이걸 만들 겁니다" 효과).</li>
+<li>실습 중 "막히면 손드세요"보다 <strong>"막히면 화면을 캡처해서 AI에게 보여주세요"</strong> 를 먼저 안내하면 질문이 줄고 자기주도성이 올라갑니다.</li>
+<li>민감 정보 입력 금지를 실습 시작 전에 한 번 더 강조하세요.</li>
+</ul>
+        <div class="footer">
+          <span>바이브 코딩 특강 · 비전공자용 핸드북</span>
+          <span>단일 HTML · GitHub Pages 등으로 그대로 공개 가능</span>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script>
+(function(){
+  // progress bar
+  var fill=document.querySelector('.progress__fill');
+  function upd(){var h=document.documentElement;var max=h.scrollHeight-h.clientHeight;
+    fill.style.width=(max>0?(h.scrollTop/max*100):0)+'%';}
+  addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd);upd();
+
+  // scrollspy
+  var links=[].slice.call(document.querySelectorAll('.toc a[href^="#"]'));
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+  var targets=[].slice.call(document.querySelectorAll('.content h1[id], .content h2[id]'));
+  if('IntersectionObserver' in window){
+    var obs=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting){
+        links.forEach(function(l){l.classList.remove('is-active');});
+        var a=map[e.target.id];if(a)a.classList.add('is-active');}});
+    },{rootMargin:'0px 0px -78% 0px',threshold:0});
+    targets.forEach(function(t){obs.observe(t);});
+  }
+
+  // copy buttons
+  document.querySelectorAll('.prompt__copy').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var pre=btn.closest('.prompt').querySelector('pre');
+      var text=pre.innerText;
+      function done(){btn.textContent='\u2713 복사됨';btn.classList.add('is-copied');
+        setTimeout(function(){btn.textContent='복사';btn.classList.remove('is-copied');},1500);}
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done).catch(fallback);
+      }else{fallback();}
+      function fallback(){try{var r=document.createRange();r.selectNodeContents(pre);
+        var s=window.getSelection();s.removeAllRanges();s.addRange(r);document.execCommand('copy');
+        s.removeAllRanges();done();}catch(e){}}
+    });
+  });
+
+  // mobile sidebar
+  var sb=document.getElementById('sidebar');
+  var btn=document.querySelector('.menu-btn');
+  var ov=document.querySelector('.overlay');
+  function open(){sb.classList.add('is-open');ov.classList.add('is-show');if(btn)btn.setAttribute('aria-expanded','true');}
+  function close(){sb.classList.remove('is-open');ov.classList.remove('is-show');if(btn)btn.setAttribute('aria-expanded','false');}
+  if(btn)btn.addEventListener('click',function(){sb.classList.contains('is-open')?close():open();});
+  if(ov)ov.addEventListener('click',close);
+  document.querySelectorAll('.toc a').forEach(function(a){
+    a.addEventListener('click',function(){if(window.innerWidth<=900)close();});
+  });
+})();
+</script>
+</body>
+</html>
